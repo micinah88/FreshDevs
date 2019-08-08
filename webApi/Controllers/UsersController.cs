@@ -26,7 +26,7 @@ namespace webApi.Controllers
         [ResponseType(typeof(User))]
         public IHttpActionResult GetUser(int id)
         {
-            User user = db.Users.Find(id);
+            User user = db.Users.FirstOrDefault(x => x.ID == id);
             if (user == null)
             {
                 return NotFound();
@@ -85,30 +85,6 @@ namespace webApi.Controllers
             return CreatedAtRoute("DefaultApi", new { id = user.ID }, user);
         }
 
-        // DELETE: api/Users/5
-        [ResponseType(typeof(User))]
-        public IHttpActionResult DeleteUser(int id)
-        {
-            User user = db.Users.Find(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            db.Users.Remove(user);
-            db.SaveChanges();
-
-            return Ok(user);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
 
         private bool UserExists(int id)
         {
