@@ -49,25 +49,32 @@ namespace webApi.Controllers
                 return BadRequest();
             }
 
-            db.Entry(user).State = EntityState.Modified;
+            var dbUser = db.Users.FirstOrDefault(x => x.ID == id);
 
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            if (dbUser == null)
+                return NotFound();
+            dbUser.FirstName = user.FirstName;
+            dbUser.LastName = user.LastName;
 
-            return StatusCode(HttpStatusCode.NoContent);
+            db.SaveChanges();
+            //db.Entry(user).State = EntityState.Modified;
+
+            //try
+            //{
+            //    db.SaveChanges();
+            //}
+            //catch (DbUpdateConcurrencyException)
+            //{
+            //    if (!UserExists(id))
+            //    {
+            //        return NotFound();
+            //    }
+            //    else
+            //    {
+            //        throw;
+            //    }
+            //}
+            return CreatedAtRoute("DefaultApi", user, user);
         }
 
         // POST: api/Users
