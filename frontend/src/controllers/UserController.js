@@ -6,7 +6,8 @@ const UserController = {
       return response.data
   },
   updateUser: async (user) => {
-      const response = await axios.put(`/api/users/${user.id}`, user)
+      const response = await axios.put(`/api/users/${user.ID}`, user)
+      return response.data
   }
 }
 
